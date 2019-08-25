@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>Getting Started with Vue.js</title>
+
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/reveal.css" />
+    <link rel="stylesheet" href="css/theme/night.css" />
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css" />
+    <link rel="font" href="lib/font/Open_Sans/OpenSans-Regular.ttf" />
+    <link rel="font" href="lib/font/Montserrat/Montserrat-Bold.ttf" />
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.type = "text/css";
+      link.href = window.location.search.match(/print-pdf/gi)
+        ? "css/print/pdf.css"
+        : "css/print/paper.css";
+      document.getElementsByTagName("head")[0].appendChild(link);
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>
+            Getting Started with Vue.js
+          </h2>
+          <img
+            src="./logo.png"
+            alt=""
+            style="background: transparent; border:none; width: 20%"
+          />
+          <p>
+            Michael Ducharm
+          </p>
+        </section>
+        <section>
+          <h3>Outline</h3>
+          <ol>
+            <li>Example Use-Case</li>
+            <li>Vue.js Concepts & Features</li>
+            <li>Code Demo</li>
+          </ol>
+        </section>
+
+        <!-- Part 1 -->
+        <section>
+          <section>
+            <h3>
+              Example Use-Case
+            </h3>
+            <img src="./TLH.jpg" alt="" style="background: white" />
+            <h4>
+              Financial Aid Data-Entry @ The Learning House
+            </h4>
+          </section>
+          <section>
+            <h4>The problem</h4>
+            <ul>
+              <li>
+                30-40 daily calls
+              </li>
+              <li>
+                Tedious typing, lots of detailed notes after each call
+              </li>
+              <li>
+                Complex but repetitive information
+              </li>
+            </ul>
+          </section>
+          <section>
+            <h4>The solution</h4>
+            <p>CallHelper, a Vue.js app for data-entry</p>
+            <ul>
+              <li>
+                User-friendly, suitable for multi-tasking
+              </li>
+              <li>
+                Create notes by clicking, not typing
+              </li>
+              <li>
+                Customize based on your note-taking style
+              </li>
+            </ul>
+          </section>
+          <section>
+            <h4>
+              Some rough math:
+            </h4>
+            <ul>
+              <li>1 minute per call</li>
+              <li>30 calls per day on average</li>
+              <li>10~ counselors</li>
+            </ul>
+            <p>
+              1 minute * 30 calls * 10 counselors <br />=<br />
+              300 minutes, or 5 hours a day
+            </p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <p>
+              Vue.js is a progressive JavaScript framework for building user
+              interfaces.
+            </p>
+            <br />
+            <p>
+              Vue allows for fast prototyping in a
+              <b>declarative</b> style.
+            </p>
+          </section>
+          <section>
+            <h4>Declarative vs Imperative Programming</h4>
+          </section>
+          <section>
+            <table>
+              <thead>
+                <tr>
+                  <th align="center">Declarative</th>
+                  <th align="center">Imperative</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>What a program should do</td>
+                  <td>How a program should operate</td>
+                </tr>
+                <tr>
+                  <td>Expresses logic of application</td>
+                  <td>
+                    Concerned with how statements are evaluated
+                  </td>
+                </tr>
+                <tr>
+                  <td>More abstracted</td>
+                  <td>Less abstracted</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section>
+            <p>
+              In other words: you declare to Vue what you want it to do (the
+              logic of your application), and it will handle the details
+              involved with making this happen.
+            </p>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h4>Declarative Rendering Example</h4>
+            <pre><code class="hljs" data-trim data-line-numbers="2,8-10">
+                &lt;div&gt;
+                  {{ healthyMeal }}
+                &lt;/div&gt;
+
+                &lt;script&gt;
+                var app = new Vue({
+                  el: '#app',
+                  data: {
+                    healthyMeal: "donut bacon cheeseburger"
+                  }
+                })
+                &lt;/script&gt;
+
+              </code></pre>
+          </section>
+          <section>
+            <h4>... you can do two-way binding as well:</h4>
+            <pre><code class="hljs" data-trim data-line-numbers="1-13">
+                &lt;div&gt;
+                    {{ healthyMeal }}
+                    &lt;input v-model="healthyMeal" &gt;
+                &lt;/div&gt;
+
+                &lt;script&gt;
+                var app = new Vue({
+                  el: '#app',
+                  data: {
+                    healthyMeal: "donut bacon cheeseburger"
+                  }
+                })
+                &lt;/script&gt;
+
+              </code></pre>
+          </section>
+          <section>
+            <h4>... you can render data conditionally:</h4>
+            <pre><code class="hljs" data-trim data-line-numbers="1-13">
+                &lt;div&gt;
+                  &lt;p v-if="healthy"&gt;
+                    {{ healthyMeal }}
+                  &lt;/p&gt;
+                &lt;/div&gt;
+
+                &lt;script&gt;
+                var app = new Vue({
+                  el: '#app',
+                  data: {
+                    healthy: false,
+                    healthyMeal: "donut bacon cheeseburger"
+                  }
+                })
+                &lt;/script&gt;
+              </code></pre>
+          </section>
+          <section>
+            <h4>... you can also render data in a loop:</h4>
+            <pre><code class="hljs" data-trim data-line-numbers="1-18">
+                &lt;div&gt;
+                  &lt;p v-for="meal in meals"&gt;
+                    {{ meal }}
+                  &lt;/p&gt;
+                &lt;/div&gt;
+
+                &lt;script&gt;
+                var app = new Vue({
+                  el: '#app',
+                  data: {
+                      meals: [
+                        "donut bacon cheeseburger", 
+                        "fried Koolaid", 
+                        "fried oreos"
+                        ]
+                  }
+                })
+                &lt;/script&gt;
+              </code></pre>
+          </section>
+        </section>
+
+        <!-- Vue Instance -->
+        <section>
+          <section>
+            <h3>The Vue Instance</h3>
+            <pre><code class="hljs" data-trim data-line-numbers="1-3">
+                var app = new Vue({
+                  // options
+                })
+              </code></pre>
+          </section>
+          <section>
+            <pre><code class="hljs" data-trim data-line-numbers="1-11">
+                  var vm = new Vue({
+                   el: '#app',
+                   data: {
+                     message: "Include app's initial state here"
+                   },
+                   methods: {
+                     myFunc: function () {
+                       this.message = "Include functions here"
+                     }
+                   }
+                  })
+                </code></pre>
+          </section>
+        </section>
+
+        <!-- Vue Components -->
+        <section>
+          <section>
+            <h3>Vue Components</h3>
+            <pre><code class="hljs" data-trim data-line-numbers="1-18">
+                var myComponentObject = {
+                  name: "my-component",
+                  template: ...,
+                  data:...,
+                  methods: ...,
+                }
+              </code></pre>
+          </section>
+          <section>
+            <img src="./components.png" alt="" style="background: white" />
+          </section>
+          <section>
+            <h3>Example Component</h3>
+            <pre><code class="hljs" data-trim data-line-numbers="1-18">
+                var myComponentObject = {
+                  template: `
+                  &lt;div&gt;
+                    &lt;p&gt;Component HTML here&lt;/p&gt;
+                    {{ myComponentData }} 
+                  &lt;/div&gt;
+                  `,
+                  data() {
+                    return {
+                      myComponentData: "heya im a component"
+                    }
+                  },
+                  methods: {
+                    changeData: {
+                      this.myComponentData = "change data"
+                    }
+                 }
+                }
+              </code></pre>
+          </section>
+          <section>
+            <h3>
+              Registering your component
+            </h3>
+            <pre><code class="hljs" data-trim data-line-numbers="3-5">
+                var vm = new Vue({
+                  el: ...,
+                  components: {
+                    "my-component": myComponentObject
+                  },
+                  data: ...,
+                  methods: ...,
+                 })
+              </code></pre>
+            <h6>
+              Now this component can be used in your app as &lt;my-component
+              /&gt;
+            </h6>
+          </section>
+          <section>
+            <h3>
+              Single-File Components
+            </h3>
+            <pre><code class="hljs" data-trim data-line-numbers="1-18">
+                &lt;template&gt;
+                    &lt;div&gt;
+                     ...
+                    &lt;/div&gt;
+                  &lt;/template&gt;
+                  
+                  &lt;script&gt;
+                    ...
+                  &lt;/script&gt;
+                  
+                  &lt;style &gt;
+                    ...
+                  &lt;/style&gt;
+                   
+              </code></pre>
+            <ul>
+              <li>
+                3 parts: HTML, JavaScript, and CSS
+              </li>
+              <li>
+                Saved with .vue extension, e.g. Recipe.vue
+              </li>
+            </ul>
+          </section>
+          <section>
+            <h3>
+              Single-File Component Example
+            </h3>
+            <pre><code class="hljs" data-trim data-line-numbers="1-25">
+                &lt;template&gt;
+                    &lt;div&gt;
+                      &lt;p&gt;Recipe:&lt;/p&gt;
+                      &lt;p class="myRecipe"&gt;{{ recipeName }}&lt;/p&gt;
+                    &lt;/div&gt;
+                  &lt;/template&gt;
+                  
+                  &lt;script&gt;
+                  
+                  export default {
+                    name: "Recipe",
+                    data: () =&gt; {
+                      return {
+                        recipeName: "Bundt Cake" 
+                      };
+                    }
+                  };
+                  &lt;/script&gt;
+                  
+                  &lt;style scoped&gt;
+                    .myRecipe {
+                      color: blue 
+                    }
+                  &lt;/style&gt;
+                   
+              </code></pre>
+          </section>
+          <section>
+            <h3>
+              ... and then import your component:
+            </h3>
+            <pre><code class="hljs" data-trim data-line-numbers="1-25">
+              &lt;template&gt;
+                  &lt;div&gt;
+                    &lt;Recipe /&gt; 
+                  &lt;/div&gt;
+                &lt;/template&gt;
+                
+                &lt;script&gt;
+                import Recipe from "./components";
+                
+                export default {
+                  components: {
+                    Recipe
+                  },
+                  ...
+                 
+            </code></pre>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h3>Components can have custom properties, or "props"</h3>
+            <pre><code class="hljs" data-trim data-line-numbers="1-25">
+                &lt;template&gt;
+                    &lt;div&gt;
+                      &lt;p&gt;Recipe:&lt;/p&gt;
+                      &lt;p&gt;{{ name }}&lt;/p&gt;
+                      &lt;p&gt;{{ instructions }}&lt;/p&gt;
+                      &lt;p&gt;{{ ingredients }}&lt;/p&gt;
+                    &lt;/div&gt;
+                  &lt;/template&gt;
+                  
+                  &lt;script&gt;
+
+                  export default {
+                    name: "Recipe",
+                    props: [
+                      "name", "instructions", "ingredients"
+                    ]
+                    data: () =&gt; {
+                      return {
+                        ...
+                      };
+                    }
+                  };
+                  &lt;/script&gt;
+                   
+              </code></pre>
+          </section>
+          <section>
+            <h3>
+              ... so when you instantiate your component, data can be passed
+              into it:
+            </h3>
+            <pre><code class="hljs" data-trim data-line-numbers="1-25">
+                &lt;template&gt;
+                    &lt;div&gt;
+                      &lt;Recipe 
+                          v-bind:name="meal.name" 
+                          :ingredients="meal.ingredients"
+                          :instruction="meal.instructions" /&gt; 
+                    &lt;/div&gt;
+                  &lt;/template&gt;
+                  
+                  &lt;script&gt;
+                  import Recipe from "./components";
+                  
+                  export default {
+                    components: {
+                      Recipe
+                    },
+                    data: {
+                      meal: {
+                        name: "Chicken Fried Rice",
+                        ingredients: ["chicken", "rice", "broccoli"],
+                        instructions: ["Make rice", "Saute chicken & broccoli", "Enjoy"]
+                      }
+                    }
+                    ...
+                   
+              </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>Components can have custom events, too</h3>
+            <pre><code class="hljs" data-trim data-line-numbers="1-25">
+                &lt;template&gt;
+                    &lt;div&gt;
+                      &lt;p&gt;Chicken Korma&lt;/p&gt;
+                      &lt;button
+                          v-on:click="favoriteMethod"
+                          @click="favoriteMethod"&gt;
+                          Favorite this recipe&lt;/button&gt;
+
+                    &lt;/div&gt;
+                  &lt;/template&gt;
+                  
+                  &lt;script&gt;
+
+                  export default {
+                    name: "Recipe",
+                    methods: =&gt; {
+                      favoriteMethod() {
+                        this.$emit("favorite");
+                      }
+                    }
+                  };
+                  &lt;/script&gt;
+                   
+              </code></pre>
+          </section>
+          <section>
+            <h3>What it looks like from the outside:</h3>
+            <pre><code class="hljs" data-trim data-line-numbers="1-25">
+                  &lt;template&gt;
+                      &lt;div&gt;
+                        &lt;Recipe @favorite="favorited"/&gt;
+                      &lt;/div&gt;
+                    &lt;/template&gt;
+                    
+                    &lt;script&gt;
+  
+                    export default {
+                      name: "Recipe",
+                      methods: =&gt; {
+                        favorited() {
+                          console.log("A recipe has been favorited.")
+                        }
+                      }
+                    };
+                    &lt;/script&gt;
+                     
+                </code></pre>
+          </section>
+        </section>
+        <section>
+          <h3>For more information:</h3>
+          <ul>
+            <li>Vue's documentation</li>
+            <li>Vue Mastery's free Intro to Vue.js course</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        dependencies: [
+          { src: "plugin/markdown/marked.js" },
+          { src: "plugin/markdown/markdown.js" },
+          { src: "plugin/notes/notes.js", async: true },
+          { src: "plugin/highlight/highlight.js", async: true }
+        ]
+      });
+    </script>
+  </body>
+</html>
