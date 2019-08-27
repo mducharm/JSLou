@@ -273,17 +273,11 @@
         <section>
           <section>
             <h3>Vue Components</h3>
-            <pre><code class="hljs" data-trim data-line-numbers="1-18">
-                var myComponentObject = {
-                  name: "my-component",
-                  template: ...,
-                  data:...,
-                  methods: ...,
-                }
-              </code></pre>
-          </section>
-          <section>
             <img src="./components.png" alt="" style="background: white" />
+            <p>
+              Components allow you to reuse structure, functionality, and
+              styling throughout your application.
+            </p>
           </section>
           <section>
             <h3>Example Component</h3>
@@ -414,45 +408,39 @@
         <section>
           <section>
             <h3>Components can have custom properties, or "props"</h3>
+            <h6>Inside component:</h6>
             <pre><code class="hljs" data-trim data-line-numbers="1-25">
-                &lt;template&gt;
-                    &lt;div&gt;
-                      &lt;p&gt;Recipe:&lt;/p&gt;
-                      &lt;p&gt;{{ name }}&lt;/p&gt;
-                      &lt;p&gt;{{ instructions }}&lt;/p&gt;
-                      &lt;p&gt;{{ ingredients }}&lt;/p&gt;
-                    &lt;/div&gt;
-                  &lt;/template&gt;
-                  
-                  &lt;script&gt;
-
-                  export default {
-                    name: "Recipe",
-                    props: [
-                      "name", "instructions", "ingredients"
-                    ]
-                    data: () =&gt; {
-                      return {
+                      export default {
+                        name: "Recipe",
+                        props: [
+                          "name", "instructions", "ingredients"
+                        ]
                         ...
-                      };
-                    }
-                  };
-                  &lt;/script&gt;
-                   
-              </code></pre>
+                      }
+                  </code></pre>
+            <h6>Outside component:</h6>
+            <pre>
+                    <code class="hljs" data-trim data-line-numbers="1-25">
+                        &lt;Recipe v-bind:name="recipe.name"
+                                   :instructions="recipe.instructions"
+                                   :ingredients="recipe.ingredients"
+                        /&gt; 
+                    </code>
+                  </pre>
           </section>
+
           <section>
             <h3>
-              ... so when you instantiate your component, data can be passed
-              into it:
+              ... so when you instantiate your component, you can plug in any
+              data you want:
             </h3>
             <pre><code class="hljs" data-trim data-line-numbers="1-25">
                 &lt;template&gt;
                     &lt;div&gt;
                       &lt;Recipe 
-                          v-bind:name="meal.name" 
-                          :ingredients="meal.ingredients"
-                          :instruction="meal.instructions" /&gt; 
+                          :name="recipe.name" 
+                          :ingredients="recipe.ingredients"
+                          :instruction="recipe.instructions" /&gt; 
                     &lt;/div&gt;
                   &lt;/template&gt;
                   
@@ -464,7 +452,7 @@
                       Recipe
                     },
                     data: {
-                      meal: {
+                      recipe: {
                         name: "Chicken Fried Rice",
                         ingredients: ["chicken", "rice", "broccoli"],
                         instructions: ["Make rice", "Saute chicken & broccoli", "Enjoy"]
@@ -474,18 +462,46 @@
                    
               </code></pre>
           </section>
+          <section>
+            <p>Data flows downstream through props.</p>
+
+            <img
+              src="./props-and-events.png"
+              alt=""
+              style="background: white; width: 50%"
+            />
+          </section>
         </section>
 
         <section>
           <section>
             <h3>Components can have custom events, too</h3>
+            <h6>Inside component:</h6>
+            <pre><code class="hljs" data-trim data-line-numbers="1-25">
+                      export default {
+                        name: "Recipe",
+                        methods: =&gt; {
+                          childMethod() {
+                            this.$emit("favorite");
+                          }
+                      ...
+                    }
+                  </code></pre>
+            <h6>Outside component:</h6>
+            <pre><code class="hljs" data-trim data-line-numbers="1-25">
+                &lt;Recipe v-on:favorite="parentMethod"
+                              @favorite="parentMethod"
+                /&gt; 
+            </code></pre>
+          </section>
+          <section>
             <pre><code class="hljs" data-trim data-line-numbers="1-25">
                 &lt;template&gt;
                     &lt;div&gt;
                       &lt;p&gt;Chicken Korma&lt;/p&gt;
                       &lt;button
-                          v-on:click="favoriteMethod"
-                          @click="favoriteMethod"&gt;
+                          v-on:click="childMethod"
+                          @click="childMethod"&gt;
                           Favorite this recipe&lt;/button&gt;
 
                     &lt;/div&gt;
@@ -496,7 +512,7 @@
                   export default {
                     name: "Recipe",
                     methods: =&gt; {
-                      favoriteMethod() {
+                      childMethod() {
                         this.$emit("favorite");
                       }
                     }
@@ -510,16 +526,19 @@
             <pre><code class="hljs" data-trim data-line-numbers="1-25">
                   &lt;template&gt;
                       &lt;div&gt;
-                        &lt;Recipe @favorite="favorited"/&gt;
+                        &lt;Recipe @favorite="parentMethod"/&gt;
                       &lt;/div&gt;
                     &lt;/template&gt;
                     
                     &lt;script&gt;
-  
+                    import Recipe from "./components";
+                    
                     export default {
-                      name: "Recipe",
+                      components: {
+                        Recipe
+                      },
                       methods: =&gt; {
-                        favorited() {
+                        parentMethod() {
                           console.log("A recipe has been favorited.")
                         }
                       }
@@ -527,6 +546,38 @@
                     &lt;/script&gt;
                      
                 </code></pre>
+          </section>
+          <section>
+            <p>
+              You can give arguments to $emit() to pass data to the parent
+              component:
+            </p>
+            <pre><code class="hljs" data-trim data-line-numbers="1-25">
+                    export default {
+                      name: "Recipe",
+                      methods: =&gt; {
+                        childMethod() {
+                          this.$emit("favorite", "myFavoriteRecipe");
+                        }
+                    ...
+                  }
+                </code></pre>
+            <pre><code class="hljs" data-trim data-line-numbers="1-25">
+                    &lt;Recipe @favorite="parentMethod"/&gt;
+                    ...
+                    parentMethod(e) {
+                      this.favoriteRecipes.push(e);
+                    } 
+                </code></pre>
+          </section>
+          <section>
+            <p>Data flows upstream through emitted events.</p>
+
+            <img
+              src="./props-and-events.png"
+              alt=""
+              style="background: white; width: 50%"
+            />
           </section>
         </section>
         <section>
