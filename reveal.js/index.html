@@ -161,7 +161,7 @@
         </section>
         <section>
           <section>
-            <h4>Declarative Rendering Example</h4>
+            <h4>Declarative Rendering</h4>
             <pre><code class="hljs" data-trim data-line-numbers="2,8-10">
                 &lt;div&gt;
                   {{ healthyMeal }}
@@ -289,7 +289,7 @@
                     {{ myComponentData }} 
                   &lt;/div&gt;
                   `,
-                  data() {
+                  data: function() {
                     return {
                       myComponentData: "heya im a component"
                     }
@@ -475,7 +475,24 @@
 
         <section>
           <section>
-            <h3>Components can have custom events, too</h3>
+            <h3>Event-Handling</h3>
+            <pre><code class="hljs" data-trim data-line-numbers="1-25">
+                    &lt;button 
+                      v-on:click="onClickMethod"
+                      @click="onClickMethod"
+                      @click.once="onlyDoThisOnce"
+                      @keyup.enter="onEnterMethod"
+                    /&gt; 
+    
+                  </code></pre>
+            <p>
+              Use the v-on directive to add event listeners to HTML elements and
+              Vue components
+            </p>
+          </section>
+
+          <section>
+            <h4>Components can have custom events, too</h4>
             <h6>Inside component:</h6>
             <pre><code class="hljs" data-trim data-line-numbers="1-25">
                       export default {
@@ -494,59 +511,7 @@
                 /&gt; 
             </code></pre>
           </section>
-          <section>
-            <pre><code class="hljs" data-trim data-line-numbers="1-25">
-                &lt;template&gt;
-                    &lt;div&gt;
-                      &lt;p&gt;Chicken Korma&lt;/p&gt;
-                      &lt;button
-                          v-on:click="childMethod"
-                          @click="childMethod"&gt;
-                          Favorite this recipe&lt;/button&gt;
 
-                    &lt;/div&gt;
-                  &lt;/template&gt;
-                  
-                  &lt;script&gt;
-
-                  export default {
-                    name: "Recipe",
-                    methods: =&gt; {
-                      childMethod() {
-                        this.$emit("favorite");
-                      }
-                    }
-                  };
-                  &lt;/script&gt;
-                   
-              </code></pre>
-          </section>
-          <section>
-            <h3>What it looks like from the outside:</h3>
-            <pre><code class="hljs" data-trim data-line-numbers="1-25">
-                  &lt;template&gt;
-                      &lt;div&gt;
-                        &lt;Recipe @favorite="parentMethod"/&gt;
-                      &lt;/div&gt;
-                    &lt;/template&gt;
-                    
-                    &lt;script&gt;
-                    import Recipe from "./components";
-                    
-                    export default {
-                      components: {
-                        Recipe
-                      },
-                      methods: =&gt; {
-                        parentMethod() {
-                          console.log("A recipe has been favorited.")
-                        }
-                      }
-                    };
-                    &lt;/script&gt;
-                     
-                </code></pre>
-          </section>
           <section>
             <p>
               You can give arguments to $emit() to pass data to the parent
