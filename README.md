@@ -21,6 +21,14 @@ vue --version
 ```
 vue create your-project-name
 ```
+5. Start a local server for your Vue project
+```
+vue serve
+```
+or 
+```
+npm run serve
+```
 
 Additional Resources
 
